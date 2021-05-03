@@ -36,7 +36,7 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 
-app.get("/search", async (req, res) => {
+app.get("/customers", async (req, res) => {
     // Omitted validation check
     const totRecs = await dblib.getTotalRecords();
     //Create an empty product object (To populate form with values)
@@ -46,7 +46,7 @@ app.get("/search", async (req, res) => {
         prod_desc: "",
         prod_price: ""
     };
-    res.render("search", {
+    res.render("customers", {
         type: "get",
         totRecs: totRecs.totRecords,
         prod: prod
@@ -54,18 +54,18 @@ app.get("/search", async (req, res) => {
 });
 
 
-app.post("/search", async (req, res) => {
+app.post("/customers", async (req, res) => {
     // Omitted validation check
     //  Can get this from the page rather than using another DB call.
     //  Add it as a hidden form value.
     const totRecs = await dblib.getTotalRecords();
     
-    console.log("POST Search, req.body is:", req.body);
+    console.log("POST Customers, req.body is:", req.body);
 
     dblib.findProducts(req.body)
         .then(result => {
             console.log("result from findProducts is:", result);
-            res.render("search", {
+            res.render("customers", {
                 type: "post",
                 totRecs: totRecs.totRecords,
                 result: result,
@@ -73,7 +73,7 @@ app.post("/search", async (req, res) => {
             })
         })
         .catch(err => {
-            res.render("search", {
+            res.render("customers", {
                 type: "post",
                 totRecs: totRecs.totRecords,
                 result: `Unexpected Error: ${err.message}`,
@@ -82,17 +82,17 @@ app.post("/search", async (req, res) => {
         });
 });
 
-app.get("/searchajax", async (req, res) => {
-    // Omitted validation check
-    const totRecs = await dblib.getTotalRecords();
-    res.render("searchajax", {
-        totRecs: totRecs.totRecords,
-    });
-});
+// app.get("/searchajax", async (req, res) => {
+//     // Omitted validation check
+//     const totRecs = await dblib.getTotalRecords();
+//     res.render("searchajax", {
+//         totRecs: totRecs.totRecords,
+//     });
+// });
 
-app.post("/searchajax", upload.array(), async (req, res) => {
-    dblib.findProducts(req.body)
-        .then(result => res.send(result))
-        .catch(err => res.send({trans: "Error", result: err.message}));
+// app.post("/searchajax", upload.array(), async (req, res) => {
+//     dblib.findProducts(req.body)
+//         .then(result => res.send(result))
+//         .catch(err => res.send({trans: "Error", result: err.message}));
 
-});
+// });
