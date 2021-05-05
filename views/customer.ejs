@@ -10,7 +10,7 @@
         <tr>
             <td><label for="cusid ">ID</label>:</td>
             <td><input type="number" name="cusid" id="cusid" value="<%= cust.cust_id %>" /></td>
-            <td>(equal)</td>
+            <td>(equals)</td>
         </tr>
         <tr>
             <td><label for="cusfname">First Name</label>:</td>
@@ -24,7 +24,7 @@
         </tr>
         <tr>
             <td><label for="cusstate">State</label>:</td>
-            <td><input type="text" name="cusstate" id="cusstate" value="<%= cust.cust_state %>" /></td>
+            <td><input type="text" name="cusstate" id="cusstate" value="<%= cust.cust_state %>" maxlength="2"/></td>
             <td>(Equals)</td>
         </tr>
         <tr>
@@ -89,3 +89,4 @@
 <% } %>
 
 <%- include("_footer") -%>  
+
