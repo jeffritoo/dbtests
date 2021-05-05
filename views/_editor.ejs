@@ -2,42 +2,45 @@
 <div class="form-group row">
     <label class="col-form-label col-sm-2" for="cusid">ID</label>
     <div class="col-sm-8">
-      <input autofocus class="form-control" name="cusid" value="<%= model.cusid %>" />
+      <input autofocus class="form-control" name="cusid" value="<%= model.cusid %>" required/>
+      <td>(Required)</td>
     </div>
   </div>
 <!-- FIRST NAME  -->
   <div class="form-group row">
     <label class="col-form-label col-sm-2" for="cusfname">First Name</label>
     <div class="col-sm-7">
-      <input class="form-control" name="cusfname" value="<%= model.cusfname %>" />
+      <input class="form-control" name="cusfname" value="<%= model.cusfname %>" required />
+      <td>(Required)</td>
     </div>
   </div>
 <!-- LAST NAME   -->
   <div class="form-group row">
     <label class="col-form-label col-sm-2" for="cuslname">Last Name</label>
     <div class="col-sm-10">
-      <textarea class="form-control" cols="20" name="cuslname" maxlength="32000" rows="7"><%= model.cuslname %></textarea>
+      <input class="form-control" name="cuslname" value="<%= model.cuslname %>" required />
+      <td>(Required)</td>
     </div>
   </div>
 <!-- STATE -->
   <div class="form-group row">
     <label class="col-form-label col-sm-2" for="cusstate">State</label>
     <div class="col-sm-10">
-      <textarea class="form-control" cols="20" name="cusstate" maxlength="32000" rows="7"><%= model.cusstate %></textarea>
+      <input class="form-control" name="cusstate" value="<%= model.cusstate %>" required/>
     </div>
   </div>
 <!-- SALES YTD -->
   <div class="form-group row">
     <label class="col-form-label col-sm-2" for="cussalesytd">Sale YTD</label>
     <div class="col-sm-10">
-      <textarea class="form-control" cols="20" name="cussalesytd" maxlength="32000" rows="7"><%= model.cussalesytd %></textarea>
+      <input class="form-control" name="cussalesytd" value="<%= model.cussalesytd %>" required/>
     </div>
   </div>
 <!-- PREVIOUS YEARS SALES -->
   <div class="form-group row">
     <label class="col-form-label col-sm-2" for="cussalesprev">Previous Years Sales</label>
     <div class="col-sm-10">
-      <textarea class="form-control" cols="20" name="cussalesprev" maxlength="32000" rows="7"><%= model.cussalesprev %></textarea>
+      <input class="form-control" name="cussalesprev" value="<%= model.cussalesprev %>"/>
     </div>
   </div>
   
