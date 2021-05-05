@@ -89,8 +89,8 @@ const findProducts = (customer) => {
     };
     //CUSTOMER STATE
     if (customer.cusstate !== "") {
-        params.push(parseInt(customer.cusstate));
-        sql += ` AND cusstate = $${i}`;
+        params.push(`${customer.cusstate}%`);
+        sql += ` AND UPPER(cusstate) LIKE UPPER($${i})`;
         i++;
     };
     //SALES YTD
@@ -125,6 +125,8 @@ const findProducts = (customer) => {
             }
         });
 };
+
+
 
 
 // Add this at the bottom
