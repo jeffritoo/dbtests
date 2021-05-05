@@ -2,7 +2,7 @@
 <div class="form-group row">
     <label class="col-form-label col-sm-2" for="cusid">ID</label>
     <div class="col-sm-2">
-      <input type="number" autofocus class="form-control" name="cusid" value="<%= model.cusid %>" required/>
+      <input readonly class="form-control" name="cusid" value="<%= model.cusid %>"/>
       <td>(Required)</td>
     </div>
   </div>
@@ -10,7 +10,7 @@
   <div class="form-group row">
     <label class="col-form-label col-sm-2" for="cusfname">First Name</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" name="cusfname" value="<%= model.cusfname %>" required />
+      <input readonly class="form-control" name="cusfname" value="<%= model.cusfname %>"/>
       <td>(Required)</td>
     </div>
   </div>
@@ -18,7 +18,7 @@
   <div class="form-group row">
     <label class="col-form-label col-sm-2" for="cuslname">Last Name</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" name="cuslname" value="<%= model.cuslname %>" required />
+      <input readonly class="form-control" name="cuslname" value="<%= model.cuslname %>"/>
       <td>(Required)</td>
     </div>
   </div>
@@ -26,21 +26,20 @@
   <div class="form-group row">
     <label class="col-form-label col-sm-2" for="cusstate">State</label>
     <div class="col-sm-2">
-      <input type="text"  class="form-control" name="cusstate" maxlength="2" value="<%= model.cusstate %>" />
+      <input readonly class="form-control" name="cusstate" value="<%= model.cusstate %>" />
     </div>
   </div>
 <!-- SALES YTD -->
   <div class="form-group row">
     <label class="col-form-label col-sm-2" for="cussalesytd">Sale YTD</label>
     <div class="col-sm-4">
-      <input type="number" class="form-control" name="cussalesytd" value="<%= model.cussalesytd %>"/>
+      <input readonly class="form-control" name="cussalesytd" value="<%= model.cussalesytd %>"/>
     </div>
   </div>
 <!-- PREVIOUS YEARS SALES -->
   <div class="form-group row">
     <label class="col-form-label col-sm-2" for="cussalesprev">Previous Years Sales</label>
     <div class="col-sm-4">
-      <input type ="number" class="form-control" name="cussalesprev" value="<%= model.cussalesprev %>"/>
+      <input readonly class="form-control" name="cussalesprev" value="<%= model.cussalesprev %>"/>
     </div>
   </div>
-  

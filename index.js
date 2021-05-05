@@ -132,6 +132,36 @@ app.get("/create", (req, res) => {
     });
   });
 
+// GET /delete/5
+app.get("/delete/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = "SELECT * FROM customer WHERE cusid = $1";
+  pool.query(sql, [id], (err, result) => {
+    // if (err) ...
+    res.render("delete", { model: result.rows[0] });
+  });
+});
+
+// POST /delete/5
+app.post("/delete/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = "DELETE FROM customer WHERE cusid = $1";
+  pool.query(sql, [id], (err, result) => {
+    // if (err) ...
+    res.redirect("/customer");
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
 // app.get("/searchajax", async (req, res) => {
 //     // Omitted validation check
 //     const totRecs = await dblib.getTotalRecords();
