@@ -46,6 +46,8 @@
     </table>
 </form>
 
+
+
 <!-- Omitted Error Checking / Needs to be added -->
 <% if (type === "post") { %>
     <% if (result.result.length === 0) { %>
@@ -60,6 +62,9 @@
                     <th>State</th>
                     <th>Sales YTD</th>
                     <th>Prev Years Sales</th>
+                    <th class="d-print-none">
+                        <a class="btn btn-sm btn-success" href="/create">Create Customer</a>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -71,6 +76,10 @@
                         <td><%= customer.cusstate %></td>
                         <td><%= customer.cussalesytd %></td>
                         <td><%= customer.cussalesprev %></td>
+                        <td class="d-print-none">
+                            <a class="btn btn-sm btn-warning" href="/edit/<%= customer.cusid %>">Edit</a>
+                            <a class="btn btn-sm btn-danger" href="/delete/<%= customer.cusid %>">Delete</a>
+                          </td>
                     </tr>
                 <% }); %>
             </tbody>

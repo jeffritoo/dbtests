@@ -6,6 +6,15 @@ const dblib = require("./dblib.js");
 const multer = require("multer");
 const upload = multer();
 
+const { Pool } = require("pg");
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
 // Add middleware to parse default urlencoded form
 app.use(express.urlencoded({ extended: false }));
 
@@ -26,8 +35,8 @@ app.use((req, res, next) => {
 app.use(express.static("public"));
 
 // Start listener
-app.listen(process.env.PORT || 3000, () => {
-    console.log("Server started (http://localhost:3000/) !");
+app.listen(process.env.PORT || 3001, () => {
+    console.log("Server started (http://localhost:3001/) !");
 });
 
 // Setup routes
@@ -82,6 +91,46 @@ app.post("/customer", async (req, res) => {
             });
         });
 });
+
+
+//EDIT CUSTOMER
+app.get("/edit/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "SELECT * FROM customer WHERE cusid = $1";
+    pool.query(sql, [id], (err, result) => {
+      // if (err) ...
+      res.render("edit", { model: result.rows[0] });
+    });
+  });
+  
+  // POST /edit/5
+  app.post("/edit/:id", (req, res) => {
+    const id = req.params.id;
+    const customer = [req.body.cusid, req.body.cusfname, req.body.cuslname, req.body.cusstate, req.body.cussalesytd, req.body.cussalesprev, id];
+    const sql = "UPDATE Customer SET Cusid = $1, Cusfname = $2, Cuslname = $3, Cusstate = $4, Cussalesytd = $5, Cussalesprev = $6 WHERE (Cusid = $7)";
+    pool.query(sql, customer, (err, result) => {
+      // if (err) ...
+      res.redirect("/customer");
+    });
+  });
+
+// GET /create
+app.get("/create", (req, res) => {
+    const customer = {
+      cusfname: "Victor Hugo"
+    }
+    res.render("create", { model: customer });
+  });
+  
+  // POST /create
+  app.post("/create", (req, res) => {
+    const sql = "INSERT INTO customer (cusid, cusfname, cuslname, cusstate, cussalesytd, cussalesprev) VALUES ($1, $2, $3, $4, $5, $6)";
+    const customer = [req.body.cusid, req.body.cusfname, req.body.cuslname, req.body.cusstate, req.body.cussalesytd, req.body.cussalesprev];
+    pool.query(sql, customer, (err, result) => {
+      // if (err) ...
+      res.redirect("/customer");
+    });
+  });
 
 // app.get("/searchajax", async (req, res) => {
 //     // Omitted validation check

@@ -1,0 +1,43 @@
+<!-- ID -->
+<div class="form-group row">
+    <label class="col-form-label col-sm-2" for="cusid">ID</label>
+    <div class="col-sm-8">
+      <input autofocus class="form-control" name="cusid" value="<%= model.cusid %>" />
+    </div>
+  </div>
+<!-- FIRST NAME  -->
+  <div class="form-group row">
+    <label class="col-form-label col-sm-2" for="cusfname">First Name</label>
+    <div class="col-sm-7">
+      <input class="form-control" name="cusfname" value="<%= model.cusfname %>" />
+    </div>
+  </div>
+<!-- LAST NAME   -->
+  <div class="form-group row">
+    <label class="col-form-label col-sm-2" for="cuslname">Last Name</label>
+    <div class="col-sm-10">
+      <textarea class="form-control" cols="20" name="cuslname" maxlength="32000" rows="7"><%= model.cuslname %></textarea>
+    </div>
+  </div>
+<!-- STATE -->
+  <div class="form-group row">
+    <label class="col-form-label col-sm-2" for="cusstate">State</label>
+    <div class="col-sm-10">
+      <textarea class="form-control" cols="20" name="cusstate" maxlength="32000" rows="7"><%= model.cusstate %></textarea>
+    </div>
+  </div>
+<!-- SALES YTD -->
+  <div class="form-group row">
+    <label class="col-form-label col-sm-2" for="cussalesytd">Sale YTD</label>
+    <div class="col-sm-10">
+      <textarea class="form-control" cols="20" name="cussalesytd" maxlength="32000" rows="7"><%= model.cussalesytd %></textarea>
+    </div>
+  </div>
+<!-- PREVIOUS YEARS SALES -->
+  <div class="form-group row">
+    <label class="col-form-label col-sm-2" for="cussalesprev">Previous Years Sales</label>
+    <div class="col-sm-10">
+      <textarea class="form-control" cols="20" name="cussalesprev" maxlength="32000" rows="7"><%= model.cussalesprev %></textarea>
+    </div>
+  </div>
+  

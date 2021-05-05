@@ -29,33 +29,33 @@ const getTotalRecords = () => {
 
 
 
-// const insertProduct = (product) => {
-//     // Will accept either a product array or product object
-//     if (product instanceof Array) {
-//         params = product;
-//     } else {
-//         params = Object.values(product);
-//     };
+const insertProduct = (customer) => {
+    // Will accept either a product array or product object
+    if (customer instanceof Array) {
+        params = customer;
+    } else {
+        params = Object.values(customer);
+    };
 
-//    // console.log("param is:", params);
+   // console.log("param is:", params);
 
-//     const sql = `INSERT INTO product (prod_id, prod_name, prod_desc, prod_price)
-//                  VALUES ($1, $2, $3, $4)`;
+    const sql = `INSERT INTO customer (cusid, cusfname, cuslname, cusstate, cussalesytd, cussalesprev)
+                 VALUES ($1, $2, $3, $4, $5, $6)`;
 
-//     return pool.query(sql, params)
-//         .then(res => {
-//             return {
-//                 trans: "success", 
-//                 msg: `Product id ${params[0]} successfully inserted`
-//             };
-//         })
-//         .catch(err => {
-//             return {
-//                 trans: "fail", 
-//                 msg: `Error on insert of product id ${params[0]}.  ${err.message}`
-//             };
-//         });
-// };
+    return pool.query(sql, params)
+        .then(res => {
+            return {
+                trans: "success", 
+                msg: `Customer id ${params[0]} successfully inserted`
+            };
+        })
+        .catch(err => {
+            return {
+                trans: "fail", 
+                msg: `Error on insert of product id ${params[0]}.  ${err.message}`
+            };
+        });
+};
 
 //FIND CUSTOMERS//
 
@@ -115,8 +115,8 @@ const findProducts = (customer) => {
         .then(result => {
             return { 
                 trans: "success",
-                result: result.rows
-            }
+                result: result.rows,
+             }
         })
         .catch(err => {
             return {
@@ -129,5 +129,5 @@ const findProducts = (customer) => {
 
 // Add this at the bottom
 module.exports.getTotalRecords = getTotalRecords;
-//module.exports.insertProduct = insertProduct;
+module.exports.insertProduct = insertProduct;
 module.exports.findProducts = findProducts;
