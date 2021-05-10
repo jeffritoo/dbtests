@@ -152,10 +152,64 @@ app.post("/delete/:id", (req, res) => {
   });
 });
 
+//INPUT FROM LOCAL FILE AJAX//
+
+app.get("/input", (req, res) => {
+  res.render("input");
+});
+
+app.post("/input",  upload.single('filename'), (req, res) => {
+   if(!req.file || Object.keys(req.file).length === 0) {
+       message = "Error: Import file not uploaded";
+       return res.send(message);
+   };
+   //Read file line by line, inserting records
+   const buffer = req.file.buffer; 
+   const lines = buffer.toString().split(/\r?\n/);
+
+   lines.forEach(line => {
+        //console.log(line);
+        product = line.split(",");
+        //console.log(product);
+        const sql = "INSERT INTO customer(cusid, cusfname, cuslname, cusstate, cussalesytd, cussalesprev) VALUES ($1, $2, $3, $4, $5, $6)";
+        pool.query(sql, product, (err, result) => {
+            if (err) {
+                console.log(`Insert Error.  Error message: ${err.message}`);
+            } else {
+                console.log(`Inserted successfully`);
+            }
+       });
+   });
+   message = `Processing Complete - Processed ${lines.length} records`;
+   res.send(message);
+});
 
 
-
-
+//OUTPUT ALL DATABASE RECORDS TO .CSV//
+app.get("/output", (req, res) => {
+  var message = "";
+  res.render("output",{ message: message });
+ });
+ 
+ 
+ app.post("/output", (req, res) => {
+     const sql = "SELECT * FROM CUSTOMER ORDER BY CUSID";
+     pool.query(sql, [], (err, result) => {
+         var message = "";
+         if(err) {
+             message = `Error - ${err.message}`;
+             res.render("output", { message: message })
+         } else {
+             var output = "";
+             result.rows.forEach(customer => {
+                 output += `${customer.cusid},${customer.cusfname},${customer.cuslname},${customer.cusstate},${customer.cussalesytd},${customer.cussalesprev}\r\n`;
+             });
+             res.header("Content-Type", "text/csv");
+             res.attachment("export.csv");
+             return res.send(output);
+         };
+     });
+ });
 
 
 
