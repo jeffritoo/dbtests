@@ -2,6 +2,15 @@
 
 <h3>Click on submit to export all database records to export.csv</h3>
 <form action="/output" method="post">
+
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2" for="filename">File name</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" name="filename" id="filename" value="<%=filename %>"/>
+        </div>
+      </div>
+
+
     <input class="btn btn-sm btn-success" type="submit" id="submit" value="Download">
 </form>
 <% if(message.substring(0,5) === "Error") { %>

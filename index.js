@@ -147,6 +147,7 @@ app.post("/delete/:id", (req, res) => {
   const id = req.params.id;
   const sql = "DELETE FROM customer WHERE cusid = $1";
   pool.query(sql, [id], (err, result) => {
+    var message = "";
     // if (err) ...
     res.redirect("/customer");
   });
@@ -187,8 +188,11 @@ app.post("/input",  upload.single('filename'), (req, res) => {
 
 //OUTPUT ALL DATABASE RECORDS TO .CSV//
 app.get("/output", (req, res) => {
+  var filename = "export.csv";
+  
   var message = "";
-  res.render("output",{ message: message });
+  res.render("output",{ message: message, filename:filename});
+  
  });
  
  
@@ -196,6 +200,7 @@ app.get("/output", (req, res) => {
      const sql = "SELECT * FROM CUSTOMER ORDER BY CUSID";
      pool.query(sql, [], (err, result) => {
          var message = "";
+         var filename = filename;
          if(err) {
              message = `Error - ${err.message}`;
              res.render("output", { message: message })
