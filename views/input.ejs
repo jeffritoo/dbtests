@@ -1,11 +1,24 @@
 <%- include("_header") -%>
 
 <h1>Customer Import</h1>
-<form>
-    <input type="file" name="filename" id="filename" required><p></p>
+
+<h4>Total number of records in the database: <%= totRecs %></h4>
+
+<form enctype="multipart/form-data" action="./input" method="POST">
+    <input type="file" name="filename" id="prodImport" required><p></p>
     <input class="btn btn-sm btn-success" type="submit" value="Import Customers">
 </form>
-<p id="result"></p>
+
+<h3 id="waiting" style="display: none">Waiting for results...</h3>
+<div id="result" style="display: none">
+    <h3>Import Summary</h3>
+    <p>Records Processed: <span id="recsProcessed"></span></p>
+    <p>Records Inserted Successfully:<span id="recsInserted"></span></p>
+    <p>Records Not Inserted: <span id="recsNotInserted"></span></p>
+    <p>Errors:</p>
+    <P id="errorMsgs"></P>
+</div>
+
 
 <script>
     // Typically, if the script is large, we place it in a separate file
@@ -15,25 +28,39 @@
       // Cancel default behavior of sending a synchronous POST request
       e.preventDefault();
       // Create a FormData object, passing the form as a parameter
+      document.getElementById("waiting").style.display ="";
       const formData = new FormData(e.target);
-      // Send form data to the server with an asynchronous POST request
-      fetch("/input", {
-        method: "POST",
-        body: formData
-      })
-        .then(response => response.text())
-        .then(data => {
-            const resultElement = document.getElementById("result");
-            if (data.substring(0,5) === "Error") {
-                resultElement.innerText = `Error occurred!  ${data}`
-            } else {
-                resultElement.innerText = data;
-            };
-        })
-        .catch(err => {
-            document.getElementById("message").textContent = `Error: ${err.message}`;
-        });
     });
-    </script>
+  </script>
+  <script>
+      document.querySelector("form").addEventListener("submit", (e) =>{
+          e.preventDefault();
+          document.getElementById("waiting").style.display ="";
+          const formData = new FormData(e.target);
+          fetch("/input", {
+                method: "POST",
+                body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("waiting").style.display ="none";
+        document.getElementById("result").style.display="";
+        document.getElementById("recsProcessed").textContent= data.numRecFail + data.numRecSuccess;
+        document.getElementById("recsInserted").textContent= data.numRecSuccess;
+        document.getElementById("recsNotInserted").textContent= data.numRecFail;
 
+        let errorMsgs = document.getElementById("errorMsgs");
+        
+        for(let err of data.errorMessage){
+            let addErr = document.createElement("p");
+            addErr.textContent = err;
+            errorMsgs.appendChild(addErr);
+        }
+
+      // Send form data to the server with an asynchronous POST request
+
+      });
+    });
+</script>
+        
 <%- include("_footer") -%>

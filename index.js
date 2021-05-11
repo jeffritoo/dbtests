@@ -6,6 +6,8 @@ const dblib = require("./dblib.js");
 const multer = require("multer");
 const upload = multer();
 
+
+
 const { Pool } = require("pg");
 
 const pool = new Pool({
@@ -17,6 +19,7 @@ const pool = new Pool({
 
 // Add middleware to parse default urlencoded form
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // Setup EJS
 app.set("view engine", "ejs");
@@ -155,35 +158,68 @@ app.post("/delete/:id", (req, res) => {
 
 //INPUT FROM LOCAL FILE AJAX//
 
-app.get("/input", (req, res) => {
-  res.render("input");
+app.get("/input", async (req, res) => {
+  const totRecs = await dblib.getTotalRecords();
+  res.render("input", {
+    type:"get",
+    totRecs: totRecs.totRecords,
+  });
 });
 
-app.post("/input",  upload.single('filename'), (req, res) => {
+app.post("/input",  upload.single('filename'), async (req, res) => {
    if(!req.file || Object.keys(req.file).length === 0) {
-       message = "Error: Import file not uploaded";
-       return res.send(message);
+       message = `Error: Import file not uploaded ${req.file}`;
+       return res.json({
+         message: message,
+        });
+
    };
    //Read file line by line, inserting records
    const buffer = req.file.buffer; 
-   const lines = buffer.toString().split(/\r?\n/);
+   const rows = buffer.toString().split(/\r?\n/);
 
-   lines.forEach(line => {
-        //console.log(line);
-        product = line.split(",");
-        //console.log(product);
-        const sql = "INSERT INTO customer(cusid, cusfname, cuslname, cusstate, cussalesytd, cussalesprev) VALUES ($1, $2, $3, $4, $5, $6)";
-        pool.query(sql, product, (err, result) => {
-            if (err) {
-                console.log(`Insert Error.  Error message: ${err.message}`);
-            } else {
-                console.log(`Inserted successfully`);
-            }
-       });
+   var numRecFail = 0;
+   var numRecSuccess = 0;
+   var errorMessage = [];
+
+   for(let row of rows){
+      product = row.split(",");
+      let result = await dblib.insertProduct(product);
+      if(result.trans === "success"){
+        numRecSuccess++;
+      } else{ 
+        console.log(result);
+        numRecFail++;
+        errorMessage.push(result.msg);
+      }
+   }
+   const totRecs = await dblib.getTotalRecords();
+//response in form of key value pairs
+   res.json({
+     type: "post",
+     numRecFail: numRecFail,
+     numRecSuccess: numRecSuccess,
+     errorMessage: errorMessage,
+     totRecs: totRecs.totRecords,
    });
-   message = `Processing Complete - Processed ${lines.length} records`;
-   res.send(message);
-});
+  });
+
+//    lines.forEach(line => {
+//         //console.log(line);
+//         product = line.split(",");
+//         //console.log(product);
+//         const sql = "INSERT INTO customer(cusid, cusfname, cuslname, cusstate, cussalesytd, cussalesprev) VALUES ($1, $2, $3, $4, $5, $6)";
+//         pool.query(sql, product, (err, result) => {
+//             if (err) {
+//                 console.log(`Insert Error.  Error message: ${err.message}`);
+//             } else {
+//                 console.log(`Inserted successfully`);
+//             }
+//        });
+//    });
+//    message = `Processing Complete - Processed ${lines.length} records`;
+//    res.send(message);
+// });
 
 
 //OUTPUT ALL DATABASE RECORDS TO .CSV//
